@@ -31,7 +31,7 @@
 
     <style name="AppTheme_Login_Page" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimary">#FF5722</item>
         <item name="colorPrimaryVariant">#F44336</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
