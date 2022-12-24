@@ -1,5 +1,6 @@
 package com.example.quiz;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -8,9 +9,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginPage extends AppCompatActivity {
 
@@ -18,7 +25,9 @@ public class LoginPage extends AppCompatActivity {
     Button signIn;
     TextView signUp, forgotPassword;
     SignInButton signInGoogle;
+    ProgressBar progressBar;
 
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,11 +41,15 @@ public class LoginPage extends AppCompatActivity {
         signInGoogle = findViewById(R.id.signInBtn_google_login);
         signUp = findViewById(R.id.create_account_textview_login);
         forgotPassword = findViewById(R.id.forgotpwd_textview_login);
+        progressBar = findViewById(R.id.progressBar_login);
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String userEmail = mail.getText().toString().trim();
+                String userPassword = password.getText().toString().trim();
 
+                signInWithFirebase(userEmail, userPassword);
             }
         });
 
@@ -61,5 +74,26 @@ public class LoginPage extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void signInWithFirebase(String userEmail, String userPassword){
+        progressBar.setVisibility(View.VISIBLE);
+        signIn.setClickable(false);
+
+        auth.signInWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                                Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                startActivity(i);
+                                finish();
+                                progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(LoginPage.this, "Sign in is successful", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(LoginPage.this, "Sign in is not successful", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
