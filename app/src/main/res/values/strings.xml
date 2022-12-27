@@ -7,4 +7,6 @@
     <string name="forgot_password"> <u> Forgot your password? </u></string>
     <string name="password">Password</string>
     <string name="sign_up">SIGN UP</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="_continue">CONTINUE</string>
 </resources>
